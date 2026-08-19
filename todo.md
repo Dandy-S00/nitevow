@@ -1,0 +1,25 @@
+# Project TODO
+
+- [x] Establish NiteVow as the distinct product name and position it as a verified adult-connections platform.
+- [x] Capture the requirement that the public experience must remain sophisticated, discreet, and safety-led.
+- [x] Implement an 18+ gate that prevents all platform content from rendering until the visitor has explicitly confirmed eligibility.
+- [x] Create a polished public landing page with a clear value proposition, safety standards, and sign-in/sign-up actions.
+- [x] Create profile data structures for an optional anonymized display name, short bio, age, city-level location, preferences, and verification levels.
+- [x] Build member profile creation and editing with city-only location validation and no precise-address or coordinate fields.
+- [x] Create a browseable classified-listing system with categories, city filters, keyword search, and immediate publication by default.
+- [x] Create listing submission workflows with restricted-category verification requirements and clear status feedback.
+- [x] Build private verified-user messaging organized into conversation threads, with protected access controls.
+- [x] Implement discreet safe-contact marking and safety-alert creation from profiles and listings.
+- [x] Implement report categories, report acknowledgments, user-visible report status tracking, and protected report access.
+- [x] Build moderation records and a listing review queue that supports approval, rejection, flagging, and removal while preserving immediate-default publication.
+- [x] Build administrator tools for user management, listings, reports, safety alerts, verification status management, and platform activity overview.
+- [x] Add email-verified and ID-verified placeholder badges, including category-level verification restrictions.
+- [x] Add server-side authorization checks, audit logging, action-rate safeguards, and privacy-preserving data handling for sensitive actions.
+- [x] Add responsive, accessible, refined visual design across public, member, and administrator experiences.
+- [x] Write Vitest coverage for authentication, city privacy validation, verification-gated publishing, and durable action-rate state transitions.
+- [x] Validate the completed workflows with desktop/mobile age-gate review, a production build, a clean type check, and passing tests.
+- [x] Add a visible listing-flag action and verify flag, approval, and removal moderation flows.
+- [x] Add an admin safety-alert review panel and fuller member management controls beyond verification status.
+- [x] Replace the process-local rate limit with database-backed enforcement suitable for an autoscaling runtime, and cover its state transitions with tests.
+- [x] Add route-level Vitest verification for administrator listing approval, flagging, and removal transitions.
+- [ ] Create a final checkpoint and provide the project version with publishing guidance.
