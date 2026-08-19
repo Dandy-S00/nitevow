@@ -25,3 +25,4 @@
 - [x] Create a final checkpoint and provide the project version with publishing guidance.
 - [x] Return a stable null response for authenticated accounts that do not yet have a profile, and cover the profile-page regression with tests.
 - [x] Make the public landing page image-led, use smaller headline typography, and remove safety-forward messaging from the public front page.
+- [x] Move How Safety Works to the final navigation position and style it as a smaller secondary link.
