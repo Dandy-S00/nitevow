@@ -22,4 +22,5 @@
 - [x] Add an admin safety-alert review panel and fuller member management controls beyond verification status.
 - [x] Replace the process-local rate limit with database-backed enforcement suitable for an autoscaling runtime, and cover its state transitions with tests.
 - [x] Add route-level Vitest verification for administrator listing approval, flagging, and removal transitions.
-- [ ] Create a final checkpoint and provide the project version with publishing guidance.
+- [x] Create a final checkpoint and provide the project version with publishing guidance.
+- [x] Return a stable null response for authenticated accounts that do not yet have a profile, and cover the profile-page regression with tests.
