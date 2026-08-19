@@ -1,4 +1,5 @@
 import AgeGate from "@/components/AgeGate";
+import SeoHead from "@/components/SeoHead";
 import AdminStudio from "@/pages/AdminStudio";
 import Browse from "@/pages/Browse";
 import Inbox from "@/pages/Inbox";
@@ -16,10 +17,5 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 
-function Router() {
-  const [location] = useLocation(); const reduceMotion = useReducedMotion();
-  const transition = reduceMotion ? { duration: 0 } : { duration: 0.22, ease: "circOut" as const };
-  return <AnimatePresence mode="wait" initial={false}><motion.div key={location} initial={reduceMotion ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={reduceMotion ? undefined : { opacity: 0, y: -5 }} transition={transition}><Switch><Route path="/" component={Home} /><Route path="/browse" component={Browse} /><Route path="/profile" component={Profile} /><Route path="/member/:id" component={MemberProfile} /><Route path="/post" component={PostListing} /><Route path="/inbox" component={Inbox} /><Route path="/report/listing/:id" component={ReportListing} /><Route path="/safety" component={SafetyCenter} /><Route path="/studio" component={AdminStudio} /><Route path="/404" component={NotFound} /><Route component={NotFound} /></Switch></motion.div></AnimatePresence>;
-}
-
-export default function App() { return <ErrorBoundary><ThemeProvider defaultTheme="dark"><TooltipProvider><Toaster /><AgeGate><Router /></AgeGate></TooltipProvider></ThemeProvider></ErrorBoundary>; }
+function Router() { const [location] = useLocation(); const reduceMotion = useReducedMotion(); const transition = reduceMotion ? { duration: 0 } : { duration: 0.22, ease: "circOut" as const }; return <AnimatePresence mode="wait" initial={false}><motion.div key={location} initial={reduceMotion ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={reduceMotion ? undefined : { opacity: 0, y: -5 }} transition={transition}><Switch><Route path="/" component={Home} /><Route path="/browse" component={Browse} /><Route path="/profile" component={Profile} /><Route path="/member/:id" component={MemberProfile} /><Route path="/post" component={PostListing} /><Route path="/inbox" component={Inbox} /><Route path="/report/listing/:id" component={ReportListing} /><Route path="/safety" component={SafetyCenter} /><Route path="/studio" component={AdminStudio} /><Route path="/404" component={NotFound} /><Route component={NotFound} /></Switch></motion.div></AnimatePresence>; }
+export default function App() { return <ErrorBoundary><ThemeProvider defaultTheme="dark"><TooltipProvider><Toaster /><AgeGate><SeoHead /><Router /></AgeGate></TooltipProvider></ThemeProvider></ErrorBoundary>; }

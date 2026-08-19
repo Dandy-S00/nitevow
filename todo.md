@@ -31,3 +31,6 @@
 - [x] Update serialized user-facing template metadata to v3rya and document the intentional retention of the internal nitevow project slug and filesystem path.
 - [x] Replace stale user-facing v3rya template snapshot metadata and confirm the remaining nitevow strings are internal only.
 - [x] Add v3rya social preview metadata, a distinct logo and favicon, and accessible smooth page transitions.
+- [x] Audit the provided reference site’s public SEO surface and implement original technical, discoverability, and crawler-accessibility improvements for v3rya.
+- [x] Add crawler-visible public route content, route-specific metadata, and host-independent discovery signals without requiring a canonical-origin setting.
+- [x] Add server-injected raw-HTML metadata and no-JavaScript content fallbacks for public SEO routes, while keeping private routes noindex.
