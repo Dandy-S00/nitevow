@@ -59,6 +59,18 @@ export async function getListings(input: { category?: ListingCategory; city?: st
   return db.select({ id: listings.id, ownerUserId: listings.ownerUserId, title: listings.title, description: listings.description, category: listings.category, city: listings.city, verificationRequired: listings.verificationRequired, moderationStatus: listings.moderationStatus, publishedAt: listings.publishedAt, displayName: userProfiles.displayName, verificationStatus: userProfiles.verificationStatus }).from(listings).leftJoin(userProfiles, eq(listings.ownerUserId, userProfiles.userId)).where(and(...conditions)).orderBy(desc(listings.publishedAt)).limit(40);
 }
 
+export async function getApprovedListing(listingId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  return (await db.select({ id: listings.id, ownerUserId: listings.ownerUserId, title: listings.title, description: listings.description, category: listings.category, city: listings.city, verificationRequired: listings.verificationRequired, publishedAt: listings.publishedAt, updatedAt: listings.updatedAt, displayName: userProfiles.displayName, verificationStatus: userProfiles.verificationStatus }).from(listings).leftJoin(userProfiles, eq(listings.ownerUserId, userProfiles.userId)).where(and(eq(listings.id, listingId), eq(listings.visibility, "live"), eq(listings.moderationStatus, "approved"))).limit(1))[0];
+}
+
+export async function getApprovedListingIds() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select({ id: listings.id }).from(listings).where(and(eq(listings.visibility, "live"), eq(listings.moderationStatus, "approved"))).orderBy(desc(listings.updatedAt)).limit(500);
+}
+
 export async function createListing(input: { ownerUserId: number; title: string; description: string; category: ListingCategory; city: string; verificationRequired: VerificationStatus }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");

@@ -6,7 +6,7 @@ import { startLogin } from "@/const";
 import { Button } from "@/components/ui/button";
 import V3ryaMark from "@/components/V3ryaMark";
 
-const links = [{ label: "Discover", mobileLabel: "Discover", path: "/browse", secondary: false }, { label: "Your space", mobileLabel: "Your space", path: "/profile", secondary: false }, { label: "How safety works", mobileLabel: "Safety", path: "/safety", secondary: true }] as const;
+const links = [{ label: "Discover", mobileLabel: "Discover", path: "/browse", secondary: false }, { label: "City guides", mobileLabel: "Guides", path: "/guides", secondary: false }, { label: "Your space", mobileLabel: "Your space", path: "/profile", secondary: false }, { label: "How safety works", mobileLabel: "Safety", path: "/safety", secondary: true }] as const;
 const isActive = (location: string, path: string) => location === path || location.startsWith(`${path}/`);
 
 export default function SiteHeader() {

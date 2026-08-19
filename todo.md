@@ -34,3 +34,6 @@
 - [x] Audit the provided reference site’s public SEO surface and implement original technical, discoverability, and crawler-accessibility improvements for v3rya.
 - [x] Add crawler-visible public route content, route-specific metadata, and host-independent discovery signals without requiring a canonical-origin setting.
 - [x] Add server-injected raw-HTML metadata and no-JavaScript content fallbacks for public SEO routes, while keeping private routes noindex.
+- [x] Add original editorial city guides, indexable approved-listing detail pages with optimized raw metadata, and a reusable platform-and-SEO workflow skill.
+- [x] Add internal discovery links and sitemap entries for only live, approved listing detail pages, then verify their raw metadata response.
+- [x] Add automated test coverage for approved listing-detail metadata, approved sitemap inclusion, and missing-listing noindex behavior without creating live test content.
