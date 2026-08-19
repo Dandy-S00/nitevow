@@ -30,3 +30,4 @@
 - [x] Rebrand visible platform text, document title, and project metadata from NiteVow to v3rya.
 - [x] Update serialized user-facing template metadata to v3rya and document the intentional retention of the internal nitevow project slug and filesystem path.
 - [x] Replace stale user-facing v3rya template snapshot metadata and confirm the remaining nitevow strings are internal only.
+- [x] Add v3rya social preview metadata, a distinct logo and favicon, and accessible smooth page transitions.
