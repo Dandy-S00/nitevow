@@ -27,3 +27,6 @@
 - [x] Make the public landing page image-led, use smaller headline typography, and remove safety-forward messaging from the public front page.
 - [x] Move How Safety Works to the final navigation position and style it as a smaller secondary link.
 - [x] Build a collapsible, keyboard-accessible mobile navigation menu, add route-aware active-tab styling, and use the compact Safety label on mobile.
+- [x] Rebrand visible platform text, document title, and project metadata from NiteVow to v3rya.
+- [x] Update serialized user-facing template metadata to v3rya and document the intentional retention of the internal nitevow project slug and filesystem path.
+- [x] Replace stale user-facing v3rya template snapshot metadata and confirm the remaining nitevow strings are internal only.
