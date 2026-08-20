@@ -56,3 +56,5 @@
 - [x] Test the real delete-and-upload flow through profile media helpers and verify the owner gallery order.
 - [x] Verify the public profile media query preserves the same expected order after the delete-and-upload flow.
 - [x] Archive the supplied user images in a private non-deployed intake folder with a licensing-status inventory.
+- [x] Strengthen the member profile image-upload form with ownership attestation and secure server-side validation.
+- [x] Keep the supplied watermarked images out of the public website unless watermark-free licensed originals are provided.
