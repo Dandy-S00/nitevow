@@ -55,3 +55,4 @@
 - [x] Add regression coverage for a reordered gallery after media deletion and a subsequent upload.
 - [x] Test the real delete-and-upload flow through profile media helpers and verify the owner gallery order.
 - [x] Verify the public profile media query preserves the same expected order after the delete-and-upload flow.
+- [x] Archive the supplied user images in a private non-deployed intake folder with a licensing-status inventory.
