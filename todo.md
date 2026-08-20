@@ -43,3 +43,6 @@
 - [x] Add database-helper tests for public/hidden media persistence and clearing the prior featured media item.
 - [x] Replace the public stock imagery with more captivating, sensual, non-explicit v3rya editorial visuals.
 - [x] Strengthen database-helper media tests to verify returned public/hidden and single-featured media state after updates.
+- [x] Verify the Safety navigation label on desktop and mobile, apply any needed correction, and save a confirmation checkpoint.
+- [x] Verify the latest visual-editor changes, retain stable compliant hosted imagery, and save a corrected checkpoint.
+- [x] Restore the external image edit to stable project-hosted imagery, confirm the Safety label, and save the verified checkpoint.
