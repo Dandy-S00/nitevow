@@ -40,6 +40,20 @@ export const listings = mysqlTable("listings", {
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 }, (table) => [index("listings_visibility_city_idx").on(table.visibility, table.city), index("listings_owner_idx").on(table.ownerUserId)]);
 
+export const profileMedia = mysqlTable("profileMedia", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  storageKey: varchar("storageKey", { length: 512 }).notNull().unique(),
+  url: varchar("url", { length: 768 }).notNull(),
+  mediaType: mysqlEnum("mediaType", ["image", "video"]).notNull(),
+  mimeType: varchar("mimeType", { length: 80 }).notNull(),
+  caption: varchar("caption", { length: 180 }),
+  visibility: mysqlEnum("visibility", ["public", "hidden"]).default("public").notNull(),
+  isFeatured: boolean("isFeatured").default(false).notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => [index("profile_media_user_idx").on(table.userId, table.sortOrder, table.createdAt)]);
+
 export const conversations = mysqlTable("conversations", {
   id: int("id").autoincrement().primaryKey(),
   threadKey: varchar("threadKey", { length: 64 }).notNull(),

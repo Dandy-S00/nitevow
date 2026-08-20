@@ -33,7 +33,13 @@
 - [x] Add v3rya social preview metadata, a distinct logo and favicon, and accessible smooth page transitions.
 - [x] Audit the provided reference site’s public SEO surface and implement original technical, discoverability, and crawler-accessibility improvements for v3rya.
 - [x] Add crawler-visible public route content, route-specific metadata, and host-independent discovery signals without requiring a canonical-origin setting.
-- [x] Add server-injected raw-HTML metadata and no-JavaScript content fallbacks for public SEO routes, while keeping private routes noindex.
+- [x] Add server-injected raw-HTML metadata and no-Javascript content fallbacks for public SEO routes, while keeping private routes noindex.
 - [x] Add original editorial city guides, indexable approved-listing detail pages with optimized raw metadata, and a reusable platform-and-SEO workflow skill.
 - [x] Add internal discovery links and sitemap entries for only live, approved listing detail pages, then verify their raw metadata response.
 - [x] Add automated test coverage for approved listing-detail metadata, approved sitemap inclusion, and missing-listing noindex behavior without creating live test content.
+- [x] Add storage-backed user profile photos and videos, privacy-safe media controls, and a media-forward profile presentation.
+- [x] Add per-item profile media visibility and featured-media controls, enforce public-media filtering server-side, and verify owner/public behavior with tests.
+- [x] Add explicit unit coverage for owner hidden/public transitions and single-featured media behavior.
+- [x] Add database-helper tests for public/hidden media persistence and clearing the prior featured media item.
+- [x] Replace the public stock imagery with more captivating, sensual, non-explicit v3rya editorial visuals.
+- [x] Strengthen database-helper media tests to verify returned public/hidden and single-featured media state after updates.

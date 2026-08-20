@@ -1,6 +1,6 @@
 import { and, count, desc, eq, inArray, like, ne, or, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { conversationParticipants, conversations, listings, messages, moderationActions, reports, safetySignals, type InsertUser, userProfiles, users } from "../drizzle/schema";
+import { conversationParticipants, conversations, listings, messages, moderationActions, profileMedia, reports, safetySignals, type InsertUser, userProfiles, users } from "../drizzle/schema";
 import type { ListingCategory, VerificationStatus } from "../shared/platformRules";
 import { ENV } from "./_core/env";
 
@@ -40,6 +40,45 @@ export async function getPublicProfile(userId: number) {
   const db = await getDb();
   if (!db) return undefined;
   return (await db.select({ userId: userProfiles.userId, displayName: userProfiles.displayName, bio: userProfiles.bio, age: userProfiles.age, city: userProfiles.city, preferences: userProfiles.preferences, verificationStatus: userProfiles.verificationStatus, createdAt: userProfiles.createdAt }).from(userProfiles).where(eq(userProfiles.userId, userId)).limit(1))[0];
+}
+
+export async function getProfileMedia(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select({ id: profileMedia.id, url: profileMedia.url, mediaType: profileMedia.mediaType, mimeType: profileMedia.mimeType, caption: profileMedia.caption, visibility: profileMedia.visibility, isFeatured: profileMedia.isFeatured, sortOrder: profileMedia.sortOrder, createdAt: profileMedia.createdAt }).from(profileMedia).where(eq(profileMedia.userId, userId)).orderBy(desc(profileMedia.isFeatured), profileMedia.sortOrder, desc(profileMedia.createdAt));
+}
+
+export async function getPublicProfileMedia(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select({ id: profileMedia.id, url: profileMedia.url, mediaType: profileMedia.mediaType, mimeType: profileMedia.mimeType, caption: profileMedia.caption, isFeatured: profileMedia.isFeatured, sortOrder: profileMedia.sortOrder, createdAt: profileMedia.createdAt }).from(profileMedia).where(and(eq(profileMedia.userId, userId), eq(profileMedia.visibility, "public"))).orderBy(desc(profileMedia.isFeatured), profileMedia.sortOrder, desc(profileMedia.createdAt));
+}
+
+export async function createProfileMedia(input: { userId: number; storageKey: string; url: string; mediaType: "image" | "video"; mimeType: string; caption?: string | null }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const existing = await db.select({ id: profileMedia.id }).from(profileMedia).where(eq(profileMedia.userId, input.userId));
+  if (existing.length >= 8) throw new Error("A profile can contain up to 8 photos and videos.");
+  await db.insert(profileMedia).values({ ...input, caption: input.caption ?? null, sortOrder: existing.length, visibility: "public", isFeatured: existing.length === 0 });
+  return getProfileMedia(input.userId);
+}
+
+export async function updateProfileMedia(userId: number, mediaId: number, input: { visibility?: "public" | "hidden"; featured?: boolean }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  if (input.featured) await db.update(profileMedia).set({ isFeatured: false }).where(eq(profileMedia.userId, userId));
+  const updates: { visibility?: "public" | "hidden"; isFeatured?: boolean } = {};
+  if (input.visibility) updates.visibility = input.visibility;
+  if (input.featured !== undefined) updates.isFeatured = input.featured;
+  if (Object.keys(updates).length) await db.update(profileMedia).set(updates).where(and(eq(profileMedia.id, mediaId), eq(profileMedia.userId, userId)));
+  return getProfileMedia(userId);
+}
+
+export async function deleteProfileMedia(userId: number, mediaId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.delete(profileMedia).where(and(eq(profileMedia.id, mediaId), eq(profileMedia.userId, userId)));
+  return getProfileMedia(userId);
 }
 
 export async function saveMyProfile(input: { userId: number; displayName?: string | null; bio?: string | null; age: number; city: string; preferences: string[] }) {
