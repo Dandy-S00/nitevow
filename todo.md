@@ -50,3 +50,8 @@
 - [x] Verify the repeated failed image replacement left all homepage visuals project-hosted, then create the requested checkpoint.
 - [x] Confirm the final repeated failed image edit left the hosted homepage asset untouched and verify the current checkpoint.
 - [x] Lock the homepage editorial image sources against visual-editor source replacement while retaining layout styling controls.
+- [x] Add accessible drag-and-drop controls for members to reorder profile media and persist the order across profile galleries.
+- [x] Normalize profile-media sort order after deletion and assign later uploads a non-conflicting position.
+- [x] Add regression coverage for a reordered gallery after media deletion and a subsequent upload.
+- [x] Test the real delete-and-upload flow through profile media helpers and verify the owner gallery order.
+- [x] Verify the public profile media query preserves the same expected order after the delete-and-upload flow.

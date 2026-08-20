@@ -45,28 +45,66 @@ export async function getPublicProfile(userId: number) {
 export async function getProfileMedia(userId: number) {
   const db = await getDb();
   if (!db) return [];
-  return db.select({ id: profileMedia.id, url: profileMedia.url, mediaType: profileMedia.mediaType, mimeType: profileMedia.mimeType, caption: profileMedia.caption, visibility: profileMedia.visibility, isFeatured: profileMedia.isFeatured, sortOrder: profileMedia.sortOrder, createdAt: profileMedia.createdAt }).from(profileMedia).where(eq(profileMedia.userId, userId)).orderBy(desc(profileMedia.isFeatured), profileMedia.sortOrder, desc(profileMedia.createdAt));
+  return db.select({ id: profileMedia.id, url: profileMedia.url, mediaType: profileMedia.mediaType, mimeType: profileMedia.mimeType, caption: profileMedia.caption, visibility: profileMedia.visibility, isFeatured: profileMedia.isFeatured, sortOrder: profileMedia.sortOrder, createdAt: profileMedia.createdAt }).from(profileMedia).where(eq(profileMedia.userId, userId)).orderBy(profileMedia.sortOrder, desc(profileMedia.createdAt));
 }
 
 export async function getPublicProfileMedia(userId: number) {
   const db = await getDb();
   if (!db) return [];
-  return db.select({ id: profileMedia.id, url: profileMedia.url, mediaType: profileMedia.mediaType, mimeType: profileMedia.mimeType, caption: profileMedia.caption, isFeatured: profileMedia.isFeatured, sortOrder: profileMedia.sortOrder, createdAt: profileMedia.createdAt }).from(profileMedia).where(and(eq(profileMedia.userId, userId), eq(profileMedia.visibility, "public"))).orderBy(desc(profileMedia.isFeatured), profileMedia.sortOrder, desc(profileMedia.createdAt));
+  return db.select({ id: profileMedia.id, url: profileMedia.url, mediaType: profileMedia.mediaType, mimeType: profileMedia.mimeType, caption: profileMedia.caption, isFeatured: profileMedia.isFeatured, sortOrder: profileMedia.sortOrder, createdAt: profileMedia.createdAt }).from(profileMedia).where(and(eq(profileMedia.userId, userId), eq(profileMedia.visibility, "public"))).orderBy(profileMedia.sortOrder, desc(profileMedia.createdAt));
+}
+
+export function isExactMediaOrder(ownedMediaIds: number[], orderedMediaIds: number[]) {
+  return ownedMediaIds.length === orderedMediaIds.length && new Set(orderedMediaIds).size === orderedMediaIds.length && orderedMediaIds.every((mediaId) => ownedMediaIds.includes(mediaId));
+}
+
+type SortableMedia = { id: number; sortOrder: number; createdAt: Date };
+
+export function getNormalizedMediaSortOrders(media: SortableMedia[]) {
+  return [...media].sort((left, right) => left.sortOrder - right.sortOrder || right.createdAt.getTime() - left.createdAt.getTime()).map((item, sortOrder) => ({ id: item.id, sortOrder }));
+}
+
+export function getNextMediaSortOrder(media: Pick<SortableMedia, "sortOrder">[]) {
+  return media.reduce((largest, item) => Math.max(largest, item.sortOrder), -1) + 1;
+}
+
+async function normalizeProfileMediaOrder(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const current = await db.select({ id: profileMedia.id, sortOrder: profileMedia.sortOrder, createdAt: profileMedia.createdAt }).from(profileMedia).where(eq(profileMedia.userId, userId)).orderBy(profileMedia.sortOrder, desc(profileMedia.createdAt));
+  const normalized = getNormalizedMediaSortOrders(current);
+  for (const item of normalized) if (current.find((media) => media.id === item.id)?.sortOrder !== item.sortOrder) await db.update(profileMedia).set({ sortOrder: item.sortOrder }).where(and(eq(profileMedia.id, item.id), eq(profileMedia.userId, userId)));
+}
+
+export async function reorderProfileMedia(userId: number, orderedMediaIds: number[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const owned = await db.select({ id: profileMedia.id }).from(profileMedia).where(eq(profileMedia.userId, userId)).orderBy(profileMedia.sortOrder, desc(profileMedia.createdAt));
+  if (!isExactMediaOrder(owned.map((item) => item.id), orderedMediaIds)) throw new Error("Submit each of your profile media items exactly once when changing gallery order.");
+  await db.update(profileMedia).set({ isFeatured: false }).where(eq(profileMedia.userId, userId));
+  for (let sortOrder = 0; sortOrder < orderedMediaIds.length; sortOrder += 1) await db.update(profileMedia).set({ sortOrder }).where(and(eq(profileMedia.id, orderedMediaIds[sortOrder]), eq(profileMedia.userId, userId)));
+  await db.update(profileMedia).set({ isFeatured: true }).where(and(eq(profileMedia.id, orderedMediaIds[0]), eq(profileMedia.userId, userId)));
+  return getProfileMedia(userId);
 }
 
 export async function createProfileMedia(input: { userId: number; storageKey: string; url: string; mediaType: "image" | "video"; mimeType: string; caption?: string | null }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  const existing = await db.select({ id: profileMedia.id }).from(profileMedia).where(eq(profileMedia.userId, input.userId));
+  const existing = await db.select({ id: profileMedia.id, sortOrder: profileMedia.sortOrder }).from(profileMedia).where(eq(profileMedia.userId, input.userId));
   if (existing.length >= 8) throw new Error("A profile can contain up to 8 photos and videos.");
-  await db.insert(profileMedia).values({ ...input, caption: input.caption ?? null, sortOrder: existing.length, visibility: "public", isFeatured: existing.length === 0 });
+  await db.insert(profileMedia).values({ ...input, caption: input.caption ?? null, sortOrder: getNextMediaSortOrder(existing), visibility: "public", isFeatured: existing.length === 0 });
   return getProfileMedia(input.userId);
 }
 
 export async function updateProfileMedia(userId: number, mediaId: number, input: { visibility?: "public" | "hidden"; featured?: boolean }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  if (input.featured) await db.update(profileMedia).set({ isFeatured: false }).where(eq(profileMedia.userId, userId));
+  if (input.featured) {
+    if (input.visibility) await db.update(profileMedia).set({ visibility: input.visibility }).where(and(eq(profileMedia.id, mediaId), eq(profileMedia.userId, userId)));
+    const owned = await db.select({ id: profileMedia.id }).from(profileMedia).where(eq(profileMedia.userId, userId)).orderBy(profileMedia.sortOrder, desc(profileMedia.createdAt));
+    if (!owned.some((item) => item.id === mediaId)) return getProfileMedia(userId);
+    return reorderProfileMedia(userId, [mediaId, ...owned.filter((item) => item.id !== mediaId).map((item) => item.id)]);
+  }
   const updates: { visibility?: "public" | "hidden"; isFeatured?: boolean } = {};
   if (input.visibility) updates.visibility = input.visibility;
   if (input.featured !== undefined) updates.isFeatured = input.featured;
@@ -78,6 +116,7 @@ export async function deleteProfileMedia(userId: number, mediaId: number) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   await db.delete(profileMedia).where(and(eq(profileMedia.id, mediaId), eq(profileMedia.userId, userId)));
+  await normalizeProfileMediaOrder(userId);
   return getProfileMedia(userId);
 }
 
