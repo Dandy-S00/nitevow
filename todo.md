@@ -48,3 +48,4 @@
 - [x] Restore the external image edit to stable project-hosted imagery, confirm the Safety label, and save the verified checkpoint.
 - [x] Confirm the failed visual-editor image update left the project-hosted homepage asset unchanged and save the final verification checkpoint.
 - [x] Verify the repeated failed image replacement left all homepage visuals project-hosted, then create the requested checkpoint.
+- [x] Confirm the final repeated failed image edit left the hosted homepage asset untouched and verify the current checkpoint.
