@@ -11,9 +11,6 @@ const moments = [
   { icon: MessagesSquare, title: "Let the conversation unfold", copy: "Connect when there is something worth saying — no pressure to rush the moment." },
 ];
 
-const heroImage = "/manus-storage/v3rya-sensual-hero_3d3d5529.jpg";
-const portraitImage = "/manus-storage/v3rya-sensual-portrait_d11a051f.jpg";
-
 export default function Home() {
   const [, setLocation] = useLocation();
   const { isAuthenticated } = useAuth();
@@ -37,11 +34,11 @@ export default function Home() {
             <div className="absolute -inset-5 rounded-[2.5rem] bg-[#d8ae59]/10 blur-3xl" />
             <div className="relative grid gap-4 sm:grid-cols-[1.25fr_.75fr]">
               <figure className="relative min-h-[410px] overflow-hidden rounded-[2rem] border border-white/12 shadow-[0_30px_80px_rgba(0,0,0,.32)]">
-                <img src={heroImage} alt="Two adults sharing an intimate but non-explicit moment in an elegant evening lounge" className="absolute inset-0 h-full w-full object-cover" />
+                <div role="img" aria-label="Two adults sharing an intimate but non-explicit moment in an elegant evening lounge" data-v3rya-locked-editorial="hero" className="v3rya-editorial-media v3rya-editorial-hero absolute inset-0" />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#050812]/90 via-[#050812]/28 to-transparent p-7"><p className="text-xs font-medium tracking-[.16em] text-[#e1c687] uppercase">A different kind of evening</p><p className="mt-2 max-w-sm font-serif text-2xl leading-tight">Start with a glance. Stay for the possibility.</p></div>
               </figure>
               <figure className="relative min-h-[410px] overflow-hidden rounded-[2rem] border border-white/12 shadow-[0_30px_80px_rgba(0,0,0,.24)]">
-                <img src={portraitImage} alt="Adult in a sophisticated evening setting" className="absolute inset-0 h-full w-full object-cover" />
+                <div role="img" aria-label="Adult in a sophisticated evening setting" data-v3rya-locked-editorial="portrait" className="v3rya-editorial-media v3rya-editorial-portrait absolute inset-0" />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#050812]/90 via-transparent to-transparent p-5"><span className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e1c687]/35 bg-[#050812]/55 text-[#e1c687]"><Sparkles className="h-4 w-4" /></span></div>
               </figure>
             </div>
@@ -54,7 +51,7 @@ export default function Home() {
           <div className="grid gap-4 sm:grid-cols-3">{moments.map(({ icon: Icon, title, copy }) => <article key={title} className="rounded-2xl border border-white/9 bg-white/[.035] p-5"><Icon className="h-5 w-5 text-[#e1c687]" /><h3 className="mt-7 text-base font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-400">{copy}</p></article>)}</div>
         </div>
       </section>
-      <section className="border-y border-white/8 bg-[#0c1326]"><div className="container grid items-center gap-10 py-14 md:grid-cols-[.85fr_1.15fr] md:py-20"><div className="overflow-hidden rounded-[1.75rem] border border-white/10"><img src={heroImage} alt="Editorial adults-only evening lounge scene" className="h-[280px] w-full object-cover md:h-[360px]" /></div><div><p className="eyebrow">The city is full of openings</p><h2 className="mt-4 max-w-xl font-serif text-3xl leading-tight sm:text-4xl">What happens next is entirely up to you.</h2><p className="mt-5 max-w-xl leading-7 text-slate-400">Explore local listings, shape a profile that matches your mood, or create a small invitation for the right people to find.</p><Button onClick={() => setLocation("/browse")} variant="outline" className="mt-7 h-12 rounded-xl border-white/15 bg-transparent px-6 text-white hover:bg-white/5 hover:text-white">Browse what is nearby <ArrowRight className="ml-2 h-4 w-4" /></Button></div></div></section>
+      <section className="border-y border-white/8 bg-[#0c1326]"><div className="container grid items-center gap-10 py-14 md:grid-cols-[.85fr_1.15fr] md:py-20"><div role="img" aria-label="Editorial adults-only evening lounge scene" data-v3rya-locked-editorial="hero" className="v3rya-editorial-media v3rya-editorial-hero h-[280px] overflow-hidden rounded-[1.75rem] border border-white/10 md:h-[360px]" /><div><p className="eyebrow">The city is full of openings</p><h2 className="mt-4 max-w-xl font-serif text-3xl leading-tight sm:text-4xl">What happens next is entirely up to you.</h2><p className="mt-5 max-w-xl leading-7 text-slate-400">Explore local listings, shape a profile that matches your mood, or create a small invitation for the right people to find.</p><Button onClick={() => setLocation("/browse")} variant="outline" className="mt-7 h-12 rounded-xl border-white/15 bg-transparent px-6 text-white hover:bg-white/5 hover:text-white">Browse what is nearby <ArrowRight className="ml-2 h-4 w-4" /></Button></div></div></section>
     </main>
     <footer className="container flex flex-col gap-4 py-9 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between"><span className="font-serif text-lg text-slate-300">v3rya</span><span>Adult-only community · City-level profiles · Meet your moment</span></footer>
   </div>;

@@ -45,6 +45,11 @@ button:disabled { cursor: not-allowed; }
 .eyebrow { font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #d7b872; }
 .field-label { display: block; font-size: .8rem; font-weight: 600; color: #cbd5e1; }
 
+/* Editorial image sources are intentionally code-owned rather than DOM image attributes. */
+.v3rya-editorial-media { background-position: center; background-repeat: no-repeat; background-size: cover; }
+.v3rya-editorial-hero { background-image: url("/manus-storage/v3rya-sensual-hero_3d3d5529.jpg"); }
+.v3rya-editorial-portrait { background-image: url("/manus-storage/v3rya-sensual-portrait_d11a051f.jpg"); }
+
 @media (prefers-reduced-motion: no-preference) {
   button, a, article { transition-duration: 180ms; transition-timing-function: cubic-bezier(.23, 1, .32, 1); }
 }
